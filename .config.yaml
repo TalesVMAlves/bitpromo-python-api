@@ -1,0 +1,21 @@
+generation:
+  model_generator: "gpt-4o"      
+  model_simple: "gpt-4o-mini"   
+  total_produtos_por_nicho: 20 
+  nichos:
+    - "Eletrodomesticos (Geladeiras, Fogoes, Microondas)"
+    - "Eletronicos (TVs, Celulares, Tablets)"
+    - "Utensilios de Cozinha (Panelas, Talheres, Mixers)"
+    - "Moveis e Decoracao (Sofas, Mesas, Cadeiras)"
+    - "Instrumentos Musicais (Violoes, Teclados)"      
+  total_empresas: 10
+  total_produtos: 100
+  language: "pt_BR"
+
+database:
+  driver: "mysql+pymysql"
+
+embeddings:
+  provider: "openai"
+  model: "text-embedding-3-small"
+  chroma_path: "./chroma_db_data"   
