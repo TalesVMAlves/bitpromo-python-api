@@ -9,3 +9,11 @@ class ProdutoResponse(BaseModel):
     imagem: Optional[str] = None
     link: Optional[str] = None
     score_similaridade: float
+
+class ProdutoVetorInput(BaseModel):
+    id: int
+    nome_produto: str
+    categoria: str
+    preco: float
+    imagem: Optional[str] = None
+    link: Optional[str] = None

@@ -4,7 +4,6 @@ from sqlalchemy import text
 from app.dependencies import engine, get_chroma_collection
 from app.schemas import ProdutoResponse
 
-# Criamos um Router em vez de um 'app' direto
 router = APIRouter()
 
 @router.get("/buscar_semantica", response_model=List[ProdutoResponse])
@@ -19,13 +18,11 @@ def buscar_por_texto(
     """
     collection = get_chroma_collection()
     
-    # 1. Busca no ChromaDB
     results = collection.query(
         query_texts=[q],
         n_results=limit
     )
 
-    # 2. Processamento e Filtro (Threshold)
     ids_encontrados = []
     scores_map = {}
 
@@ -43,7 +40,6 @@ def buscar_por_texto(
     if not ids_encontrados:
         return []
 
-    # 3. Enriquecimento com dados do MySQL
     return _buscar_detalhes_sql(ids_encontrados, scores_map)
 
 
@@ -58,7 +54,6 @@ def recomendar_por_id(
     """
     collection = get_chroma_collection()
 
-    # 1. Recuperar o vetor do produto alvo
     target = collection.get(
         ids=[str(produto_id)],
         include=["embeddings"]
@@ -69,14 +64,12 @@ def recomendar_por_id(
 
     target_embedding = target['embeddings'][0]
 
-    # 2. Buscar vizinhos (KNN)
     results = collection.query(
         query_embeddings=[target_embedding],
-        n_results=limit + 1, # +1 pois o próprio produto virá no resultado
+        n_results=limit + 1, 
         include=["distances"]
     )
 
-    # 3. Processamento e Filtro
     ids_encontrados = []
     scores_map = {}
 
@@ -85,7 +78,6 @@ def recomendar_por_id(
         found_distances = results['distances'][0]
 
         for id_str, distancia in zip(found_ids, found_distances):
-            # Pula o próprio produto que está sendo consultado
             if id_str == str(produto_id):
                 continue
 
@@ -98,7 +90,6 @@ def recomendar_por_id(
     if not ids_encontrados:
         return []
 
-    # 4. Enriquecimento com MySQL
     return _buscar_detalhes_sql(ids_encontrados, scores_map)
 
 
@@ -132,7 +123,6 @@ def _buscar_detalhes_sql(ids_lista: List[str], scores_map: dict) -> List[Produto
             score_similaridade=round(sim_score, 4)
         ))
 
-    # Ordena pelo score (do maior para o menor)
     response_list.sort(key=lambda x: x.score_similaridade, reverse=True)
 
     return response_list
