@@ -115,14 +115,14 @@ def _buscar_detalhes_sql(ids_lista: List[str], scores_map: dict) -> List[Produto
         
         response_list.append(ProdutoResponse(
             id=prod['id'],
-            nome=prod['nome_produto'],
+            nomeProduto=prod['nome_produto'],
             categoria=prod['categoria'],
             preco=float(prod['preco']),
             imagem=prod['imagem'],
             link=prod['link'],
-            score_similaridade=round(sim_score, 4)
+            scoreSimilaridade=round(sim_score, 4)
         ))
 
-    response_list.sort(key=lambda x: x.score_similaridade, reverse=True)
+    response_list.sort(key=lambda x: x.scoreSimilaridade, reverse=True)
 
     return response_list

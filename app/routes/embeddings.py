@@ -15,7 +15,7 @@ def adicionar_produto_vetorial(
     """
     try:
         texto_semantico = (
-            f"Produto: {produto.nome_produto}. "
+            f"Produto: {produto.nomeProduto}. "
             f"Categoria: {produto.categoria}. "
             f"Faixa de preço: R$ {produto.preco:.2f}"
         )
@@ -34,7 +34,7 @@ def adicionar_produto_vetorial(
         )
 
         return {
-            "message": f"Produto '{produto.nome_produto}' sincronizado.",
+            "message": f"Produto '{produto.nomeProduto}' sincronizado.",
             "id": produto.id
         }
 
